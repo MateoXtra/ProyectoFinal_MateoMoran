@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="cartelera" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="943" height="572"/>
+      <xy x="20" y="20" width="943" height="651"/>
     </constraints>
     <properties>
       <background color="-15987687"/>
@@ -20,14 +20,14 @@
           <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <font size="20" style="1"/>
+          <font size="22" style="1"/>
           <foreground color="-131075"/>
-          <text value="Cartelera"/>
+          <text value="En Cartelera"/>
         </properties>
       </component>
       <component id="d5dba" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="202" height="284"/>
           </grid>
         </constraints>
@@ -38,7 +38,7 @@
       </component>
       <component id="bba6f" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <icon value="Assets/intesamente.PNG"/>
@@ -47,7 +47,7 @@
       </component>
       <component id="ad1b6" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <icon value="Assets/mivillano.PNG"/>
@@ -56,18 +56,13 @@
       </component>
       <component id="58828" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <icon value="Assets/tornado.PNG"/>
           <text value=""/>
         </properties>
       </component>
-      <vspacer id="a3270">
-        <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
       <component id="4559e" class="javax.swing.JButton" binding="DEADPOOLYWOLVERINEButton" default-binding="true">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -75,6 +70,7 @@
         <properties>
           <background color="-51412"/>
           <font style="1"/>
+          <foreground color="-809"/>
           <text value="DEADPOOL Y WOLVERINE"/>
         </properties>
       </component>
@@ -85,6 +81,7 @@
         <properties>
           <background color="-51412"/>
           <font style="1"/>
+          <foreground color="-809"/>
           <text value="INTENSAMENTE 2"/>
         </properties>
       </component>
@@ -95,6 +92,7 @@
         <properties>
           <background color="-51412"/>
           <font style="1"/>
+          <foreground color="-809"/>
           <text value="MI VILLANO FAVORITO 4"/>
         </properties>
       </component>
@@ -105,7 +103,40 @@
         <properties>
           <background color="-51412"/>
           <font style="1"/>
+          <foreground color="-809"/>
           <text value="TORNADOS"/>
+        </properties>
+      </component>
+      <component id="2d570" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="c3782" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="cbaa3" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
+        </properties>
+      </component>
+      <component id="3f3ac" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Label"/>
         </properties>
       </component>
     </children>
