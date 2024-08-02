@@ -98,11 +98,6 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -140,11 +135,7 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
+
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -182,11 +173,6 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -224,11 +210,6 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -266,11 +247,6 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -308,11 +284,6 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -349,11 +320,6 @@ public class form2 {
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
 
-                JFrame frame3 = new JFrame();
-                frame3.setContentPane(new form3().reserva_asientos);
-                frame3.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame3.pack();
-                frame3.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }

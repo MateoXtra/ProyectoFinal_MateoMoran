@@ -1,5 +1,4 @@
 package Interfaz_Cliente;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +15,7 @@ public class form3 {
     private String clienteCorreo;
     private String idPelicula; // ID de la película proporcionado
 
-    public form3(String clienteCorreo, String idPelicula) {
+    public form3() {
         this.clienteCorreo = clienteCorreo;
         this.idPelicula = idPelicula;
 
