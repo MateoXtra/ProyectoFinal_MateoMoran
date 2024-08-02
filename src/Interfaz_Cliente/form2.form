@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Interfaz_Cliente.form2">
-  <grid id="27dc6" binding="cartelera" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="cartelera" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="943" height="651"/>
+      <xy x="20" y="20" width="943" height="794"/>
     </constraints>
     <properties>
       <background color="-15987687"/>
@@ -63,28 +63,6 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="4559e" class="javax.swing.JButton" binding="DEADPOOLYWOLVERINEButton" default-binding="true">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-51412"/>
-          <font style="1"/>
-          <foreground color="-809"/>
-          <text value="DEADPOOL Y WOLVERINE"/>
-        </properties>
-      </component>
-      <component id="ea8b6" class="javax.swing.JButton" binding="INTENSAMENTE2Button" default-binding="true">
-        <constraints>
-          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-51412"/>
-          <font style="1"/>
-          <foreground color="-809"/>
-          <text value="INTENSAMENTE 2"/>
-        </properties>
-      </component>
       <component id="4703d" class="javax.swing.JButton" binding="MIVILLANOFAVORITO4Button" default-binding="true">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -109,34 +87,141 @@
       </component>
       <component id="2d570" class="javax.swing.JLabel">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Label"/>
+          <icon value="Assets/carnada.PNG"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="c3782" class="javax.swing.JLabel">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Label"/>
+          <icon value="Assets/nochedeldiavlo.PNG"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="cbaa3" class="javax.swing.JLabel">
         <constraints>
-          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Label"/>
+          <icon value="Assets/pink.PNG"/>
+          <text value=""/>
         </properties>
       </component>
-      <component id="3f3ac" class="javax.swing.JLabel">
+      <component id="4559e" class="javax.swing.JButton" binding="DEADPOOLYWOLVERINEButton" default-binding="true">
         <constraints>
-          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Label"/>
+          <background color="-51412"/>
+          <font style="1"/>
+          <foreground color="-809"/>
+          <text value="DEADPOOL Y WOLVERINE"/>
+        </properties>
+      </component>
+      <component id="45bc8" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font style="1"/>
+          <text value="+15 años"/>
+        </properties>
+      </component>
+      <component id="ea8b6" class="javax.swing.JButton" binding="INTENSAMENTE2Button" default-binding="true">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-51412"/>
+          <font style="1"/>
+          <foreground color="-809"/>
+          <text value="INTENSAMENTE 2"/>
+        </properties>
+      </component>
+      <component id="2de99" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font style="1"/>
+          <text value="Todo publico"/>
+        </properties>
+      </component>
+      <component id="5d966" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font style="1"/>
+          <text value="Todo publico"/>
+        </properties>
+      </component>
+      <component id="26a69" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font style="1"/>
+          <text value="+12 años"/>
+        </properties>
+      </component>
+      <component id="2f6e0" class="javax.swing.JButton" binding="CARNADAButton" default-binding="true">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-51412"/>
+          <font style="1"/>
+          <text value="CARNADA"/>
+        </properties>
+      </component>
+      <component id="d5604" class="javax.swing.JButton" binding="DENOCHECONELButton" default-binding="true">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-51412"/>
+          <font style="1"/>
+          <text value="DE NOCHE CON EL DIABLO"/>
+        </properties>
+      </component>
+      <component id="cdc9" class="javax.swing.JButton" binding="BLACKPINKBORNPINKButton" default-binding="true">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-51412"/>
+          <font style="1"/>
+          <text value="BLACKPINK BORN PINK"/>
+        </properties>
+      </component>
+      <component id="798bb" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="+12 años"/>
+        </properties>
+      </component>
+      <component id="58f8f" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="+15 años"/>
+        </properties>
+      </component>
+      <component id="e09ed" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="-12 bajo supervisión"/>
         </properties>
       </component>
     </children>

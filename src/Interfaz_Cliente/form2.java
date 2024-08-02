@@ -8,4 +8,7 @@ public class form2 {
     private JButton MIVILLANOFAVORITO4Button;
     private JButton TORNADOSButton;
     public JPanel cartelera;
+    private JButton CARNADAButton;
+    private JButton DENOCHECONELButton;
+    private JButton BLACKPINKBORNPINKButton;
 }
