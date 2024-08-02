@@ -1,3 +1,7 @@
+package Login_Registro;
+
+import Interfaz_Cliente.form2;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,9 +56,16 @@ public class login {
                     // Redirigir al usuario según su tipo
                     if ("cliente".equalsIgnoreCase(tipo)) {
                         // Mostrar interfaz de cliente
+                        JFrame frame = new JFrame();
+                        frame.setContentPane(new form2().cartelera);
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        frame.pack();
+                        frame.setVisible(true);
                     } else if ("administrador".equalsIgnoreCase(tipo)) {
                         // Mostrar interfaz de administrador
                     }
+                    JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(button1);
+                    frame.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
                 }
