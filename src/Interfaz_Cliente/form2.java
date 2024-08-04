@@ -1,5 +1,7 @@
 package Interfaz_Cliente;
 
+import Login_Registro.login;
+
 import java.util.UUID;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,70 +22,63 @@ public class form2 {
     private JButton BLACKPINKBORNPINKButton;
     private String clienteCorreo;
 
-    public form2() {
+    public form2(String clienteCorreo) {
+        this.clienteCorreo = clienteCorreo;
+
         DEADPOOLYWOLVERINEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula1();
+                agregarPelicula("DEADPOOL Y WOLVERINE");
             }
         });
         INTENSAMENTE2Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula2();
-
+                agregarPelicula("INTENSAMENTE 2");
             }
         });
         MIVILLANOFAVORITO4Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula3();
-
+                agregarPelicula("MI VILLANO FAVORITO 4");
             }
         });
         TORNADOSButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula4();
-
+                agregarPelicula("TORNADOS");
             }
         });
         CARNADAButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula5();
-
+                agregarPelicula("CARNADA");
             }
         });
         DENOCHECONELButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula6();
-
+                agregarPelicula("DE NOCHE CON EL DIABLO");
             }
         });
         BLACKPINKBORNPINKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                agregarPelicula7();
-
+                agregarPelicula("BLACKPINK BORN PINK");
             }
         });
     }
 
-    private void agregarPelicula1() {
+    private void agregarPelicula(String nombrePelicula) {
         String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
         String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
 
-        // Información de la película
-        String nombrePelicula = "DEADPOOL Y WOLVERINE"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario
-
         // Generar un ID único para la película
         String idPelicula = UUID.randomUUID().toString();
+        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Ejemplo de horario
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
@@ -95,9 +90,18 @@ public class form2 {
             int filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
+
+                // Crear y mostrar form3 con el correo del cliente y el ID de la película
+                JFrame frame1 = new JFrame("Reserva de asientos");
+                form3 reservaForm = new form3(clienteCorreo, idPelicula);
+                frame1.setContentPane(reservaForm.reserva_asientos);
+                frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame1.pack();
+                frame1.setVisible(true);
+
+                // Cerrar el formulario actual
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
-
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
             }
@@ -105,235 +109,6 @@ public class form2 {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
         }
-    }
-
-
-    private void agregarPelicula2() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";
-
-        String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
-
-        // Información de la película
-        String nombrePelicula = "INTENSAMENTE 2"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario en formato JSON
-
-        // Generar un ID único para la película
-        String idPelicula = UUID.randomUUID().toString();
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
-
-            preparedStatement.setString(1, idPelicula);
-            preparedStatement.setString(2, nombrePelicula);
-            preparedStatement.setString(3, horario);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
-                frame.setContentPane(new form3().reserva_asientos);
-                frame.dispose();
-
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
-        }
-    }
-
-
-    private void agregarPelicula3() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";
-
-        String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
-
-        // Información de la película
-        String nombrePelicula = "MI VILLANO FAVORITO 4"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario en formato JSON
-
-        // Generar un ID único para la película
-        String idPelicula = UUID.randomUUID().toString();
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
-
-            preparedStatement.setString(1, idPelicula);
-            preparedStatement.setString(2, nombrePelicula);
-            preparedStatement.setString(3, horario);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
-                frame.setContentPane(new form3().reserva_asientos);
-                frame.dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
-        }
-    }
-
-
-    private void agregarPelicula4() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";
-
-        String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
-
-        // Información de la película
-        String nombrePelicula = "TORNADOS"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario en formato JSON
-
-        // Generar un ID único para la película
-        String idPelicula = UUID.randomUUID().toString();
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
-
-            preparedStatement.setString(1, idPelicula);
-            preparedStatement.setString(2, nombrePelicula);
-            preparedStatement.setString(3, horario);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
-                frame.setContentPane(new form3().reserva_asientos);
-                frame.dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
-        }
-    }
-
-
-    private void agregarPelicula5() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";
-
-        String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
-
-        // Información de la película
-        String nombrePelicula = "CARNADA"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario en formato JSON
-
-        // Generar un ID único para la película
-        String idPelicula = UUID.randomUUID().toString();
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
-
-            preparedStatement.setString(1, idPelicula);
-            preparedStatement.setString(2, nombrePelicula);
-            preparedStatement.setString(3, horario);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
-                frame.setContentPane(new form3().reserva_asientos);
-                frame.dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
-        }
-    }
-
-
-    private void agregarPelicula6() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";
-
-        String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
-
-        // Información de la película
-        String nombrePelicula = "DE NOCHE CON EL DIABLO"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario en formato JSON
-
-        // Generar un ID único para la película
-        String idPelicula = UUID.randomUUID().toString();
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
-
-            preparedStatement.setString(1, idPelicula);
-            preparedStatement.setString(2, nombrePelicula);
-            preparedStatement.setString(3, horario);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
-                frame.setContentPane(new form3().reserva_asientos);
-                frame.dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
-        }
-    }
-
-    private void agregarPelicula7() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";
-
-        String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
-
-        // Información de la película
-        String nombrePelicula = "BLACKPINK BORN PINK"; // Nombre de la película
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Horario en formato JSON
-
-        // Generar un ID único para la película
-        String idPelicula = UUID.randomUUID().toString();
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {
-
-            preparedStatement.setString(1, idPelicula);
-            preparedStatement.setString(2, nombrePelicula);
-            preparedStatement.setString(3, horario);
-
-            int filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
-                frame.setContentPane(new form3().reserva_asientos);
-                frame.dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar la película.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
-        }
-
     }
 }
 

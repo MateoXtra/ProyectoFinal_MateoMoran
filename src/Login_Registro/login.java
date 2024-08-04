@@ -75,8 +75,8 @@ public class login {
         }
     }
 
-    private void registrarse() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+    public void registrarse() {
+        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -106,8 +106,11 @@ public class login {
                 return;
             }
 
-            // Verifica el valor de tipo
-            System.out.println("Tipo seleccionado: " + tipo);
+            // Validación para correos de clientes
+            if (tipo.equals("Cliente") && !correo.endsWith("@gmail.com")) {
+                JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
+                return;
+            }
 
             // Insertar en la tabla usuarios
             String queryUsuarios = "INSERT INTO usuarios (correo, nombre, contrasena, tipo) VALUES (?, ?, ?, ?)";

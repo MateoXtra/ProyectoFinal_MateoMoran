@@ -1,4 +1,8 @@
 package Interfaz_Admin;
+import Interfaz_Cliente.form3;
+import Login_Registro.login;
+
+import java.util.ArrayDeque;
 import java.util.UUID;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +21,7 @@ public class AdminForm {
     private JButton cargarDatosClienteButton;
     private JButton cargarEstadisticasButton;
     public JPanel AdministradorPanel;
+    private JButton volverButton;
 
     // Datos de conexión
     String URL = "jdbc:mysql://localhost:3306/cine_reserva";
@@ -87,6 +92,19 @@ public class AdminForm {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cargarEstadisticas();
+            }
+        });
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame1 = new JFrame("Login");
+                frame1.setContentPane(new login().panel_login);
+                frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame1.pack();
+                frame1.setVisible(true);
+
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AdministradorPanel);
+                frame.dispose();
             }
         });
     }
@@ -180,27 +198,60 @@ public class AdminForm {
     }
 
     private void agregarCliente() {
+        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String USER = "root";
+        String PASSWORD = "123456";
+
+        // Obtener datos del cliente
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
         String contrasena = JOptionPane.showInputDialog("Ingrese la contraseña del cliente:");
 
+        // Validar datos de entrada
+        if (correo == null || correo.isEmpty() || nombre == null || nombre.isEmpty() || contrasena == null || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos deben ser completados.");
+            return;
+        }
+
+        // Validar que el correo termine en "@gmail.com"
+        if (!correo.endsWith("@gmail.com")) {
+            JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
+            return;
+        }
+
+        // Consulta SQL para insertar un nuevo cliente
         String query = "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
+            // Configurar parámetros de la consulta
             stmt.setString(1, correo);
             stmt.setString(2, nombre);
             stmt.setString(3, contrasena);
 
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente.");
+            // Ejecutar la consulta
+            int rowsAffected = stmt.executeUpdate();
 
+            // Verificar si la inserción fue exitosa
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo agregar el cliente.");
+            }
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            // Manejo específico para violación de restricciones de integridad
+            JOptionPane.showMessageDialog(null, "El correo ya está registrado. Intenta con otro.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al agregar el cliente.");
+            // Manejo genérico para otros errores SQL
+            System.out.println("Error en la base de datos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al agregar el cliente: " + e.getMessage());
         }
     }
+
+
+
 
     private void actualizarCliente() {
         // Lógica para actualizar cliente
