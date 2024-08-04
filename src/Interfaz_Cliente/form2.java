@@ -133,6 +133,7 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
+                frame.setContentPane(new form3().reserva_asientos);
                 frame.dispose();
 
 
@@ -171,6 +172,7 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
+                frame.setContentPane(new form3().reserva_asientos);
                 frame.dispose();
 
             } else {
@@ -208,6 +210,7 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
+                frame.setContentPane(new form3().reserva_asientos);
                 frame.dispose();
 
             } else {
@@ -245,6 +248,7 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
+                frame.setContentPane(new form3().reserva_asientos);
                 frame.dispose();
 
             } else {
@@ -282,6 +286,7 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
+                frame.setContentPane(new form3().reserva_asientos);
                 frame.dispose();
 
             } else {
@@ -318,6 +323,7 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
+                frame.setContentPane(new form3().reserva_asientos);
                 frame.dispose();
 
             } else {
@@ -327,6 +333,7 @@ public class form2 {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
         }
+
     }
 }
 
