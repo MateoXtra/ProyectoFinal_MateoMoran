@@ -72,7 +72,7 @@ public class form2 {
     }
 
     private void agregarPelicula1() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -109,7 +109,7 @@ public class form2 {
 
 
     private void agregarPelicula2() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -148,7 +148,7 @@ public class form2 {
 
 
     private void agregarPelicula3() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -186,7 +186,7 @@ public class form2 {
 
 
     private void agregarPelicula4() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -224,7 +224,7 @@ public class form2 {
 
 
     private void agregarPelicula5() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -262,7 +262,7 @@ public class form2 {
 
 
     private void agregarPelicula6() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -299,7 +299,7 @@ public class form2 {
     }
 
     private void agregarPelicula7() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 

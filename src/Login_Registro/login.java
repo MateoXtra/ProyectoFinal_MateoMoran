@@ -35,7 +35,7 @@ public class login {
     }
 
     private void login() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -64,7 +64,6 @@ public class login {
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.pack();
                     frame.setVisible(true);
-                    // Cerrar el frame de login
                     SwingUtilities.getWindowAncestor(button1).dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
@@ -77,7 +76,7 @@ public class login {
     }
 
     private void registrarse() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -104,7 +103,7 @@ public class login {
             // Validación para correos de administradores
             if (tipo.equals("Administrador") && !correo.endsWith("@admincine.com")) {
                 JOptionPane.showMessageDialog(null, "Para registrar un administrador, el correo debe terminar en '@admincine.com'.");
-                return; // Salir de la función si no cumple la condición
+                return;
             }
 
             // Verifica el valor de tipo
@@ -116,9 +115,6 @@ public class login {
             String querySpecific = tipo.equals("Cliente") ?
                     "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)" :
                     "INSERT INTO administrador (correo, nombre, contrasena) VALUES (?, ?, ?)";
-
-            // Verifica la consulta específica
-            System.out.println("Consulta específica: " + querySpecific);
 
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
                 // Insertar en usuarios
@@ -142,7 +138,7 @@ public class login {
             } catch (SQLIntegrityConstraintViolationException e) {
                 JOptionPane.showMessageDialog(null, "El correo ya está registrado. Intenta con otro.");
             } catch (SQLException ex) {
-                ex.printStackTrace(); // Mostrar detalles del error
+                System.out.println(ex.getMessage());
                 JOptionPane.showMessageDialog(null, "Error al registrar " + tipo + ": " + ex.getMessage());
             }
         }

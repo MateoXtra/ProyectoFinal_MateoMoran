@@ -19,7 +19,7 @@ public class AdminForm {
     public JPanel AdministradorPanel;
 
     // Datos de conexión
-    String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+    String URL = "jdbc:mysql://localhost:3306/cine_reserva";
     String USER = "root";
     String PASSWORD = "123456";
 
@@ -109,7 +109,7 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Película agregada exitosamente.");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al agregar la película.");
         }
     }
@@ -133,7 +133,7 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Película actualizada exitosamente.");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al actualizar la película.");
         }
     }
@@ -153,7 +153,7 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Película eliminada exitosamente.");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al eliminar la película.");
         }
     }
@@ -174,13 +174,12 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, peliculas.toString());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al cargar las películas.");
         }
     }
 
     private void agregarCliente() {
-        // Lógica para agregar cliente
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
         String contrasena = JOptionPane.showInputDialog("Ingrese la contraseña del cliente:");
@@ -198,7 +197,7 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente.");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al agregar el cliente.");
         }
     }
@@ -222,7 +221,7 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Cliente actualizado exitosamente.");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al actualizar el cliente.");
         }
     }
