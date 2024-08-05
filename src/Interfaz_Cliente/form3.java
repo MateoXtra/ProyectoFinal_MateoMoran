@@ -13,7 +13,8 @@ public class form3 {
     public JPanel reserva_asientos;
     private JSpinner spinner1;
     private JButton continuarButton;
-    private JLabel totalLabel; // Etiqueta para mostrar el total
+    private JLabel label; // Etiqueta para mostrar el total
+    private JLabel label2;
     private String clienteCorreo;
     private String idPelicula; // ID de la película proporcionado
     private final int COSTO_ASIENTO = 3; // Costo por asiento
@@ -29,8 +30,8 @@ public class form3 {
         }
 
         // Inicializa el JLabel para el total
-        totalLabel = new JLabel("Total: $0");
-        reserva_asientos.add(totalLabel);
+        label = new JLabel("Total: $0");
+        reserva_asientos.add(label);
 
         // Configura el ActionListener para el JSpinner
         spinner1.addChangeListener(e -> actualizarTotal());
@@ -47,7 +48,7 @@ public class form3 {
     private void actualizarTotal() {
         int cantidadAsientos = (Integer) spinner1.getValue();
         int total = cantidadAsientos * COSTO_ASIENTO;
-        totalLabel.setText("Total: $" + total);
+        label.setText("Total: $" + total);
     }
 
     private void reservarAsiento(int idAsiento) {

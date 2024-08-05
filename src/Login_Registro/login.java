@@ -2,7 +2,6 @@ package Login_Registro;
 
 import Interfaz_Admin.AdminForm;
 import Interfaz_Cliente.form2;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,7 +56,8 @@ public class login {
                     // Redirigir al usuario según su tipo
                     JFrame frame = new JFrame();
                     if ("cliente".equalsIgnoreCase(tipo)) {
-                        frame.setContentPane(new form2().cartelera);
+                        form2 formulario2 = new form2(correo);
+                        frame.setContentPane(formulario2.getCartelera()); // Usar el método correcto
                     } else if ("administrador".equalsIgnoreCase(tipo)) {
                         frame.setContentPane(new AdminForm().AdministradorPanel);
                     }

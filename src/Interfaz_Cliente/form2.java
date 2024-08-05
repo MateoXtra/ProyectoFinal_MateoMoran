@@ -1,8 +1,5 @@
 package Interfaz_Cliente;
 
-import Login_Registro.login;
-
-import java.util.UUID;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,13 +7,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class form2 {
     private JButton DEADPOOLYWOLVERINEButton;
     private JButton INTENSAMENTE2Button;
     private JButton MIVILLANOFAVORITO4Button;
     private JButton TORNADOSButton;
-    public JPanel cartelera;
+    private JPanel cartelera;
     private JButton CARNADAButton;
     private JButton DENOCHECONELButton;
     private JButton BLACKPINKBORNPINKButton;
@@ -110,6 +108,9 @@ public class form2 {
             JOptionPane.showMessageDialog(null, "Error al agregar la película: " + e.getMessage());
         }
     }
+
+    // Método para obtener el JPanel cartelera
+    public JPanel getCartelera() {
+        return cartelera;
+    }
 }
-
-
