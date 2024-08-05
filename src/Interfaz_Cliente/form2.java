@@ -76,7 +76,7 @@ public class form2 {
 
         // Generar un ID único para la película
         String idPelicula = UUID.randomUUID().toString();
-        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}"; // Ejemplo de horario
+        String horario = "{\"lunes\": \"20:00\", \"martes\": \"22:00\", \"miércoles\": \"18:00\"}";
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(queryPeliculas)) {

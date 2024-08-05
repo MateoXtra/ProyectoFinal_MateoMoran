@@ -76,7 +76,7 @@ public class login {
     }
 
     public void registrarse() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
@@ -146,6 +146,7 @@ public class login {
             }
         }
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Login");
