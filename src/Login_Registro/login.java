@@ -57,7 +57,7 @@ public class login {
                     JFrame frame = new JFrame();
                     if ("cliente".equalsIgnoreCase(tipo)) {
                         form2 formulario2 = new form2(correo);
-                        frame.setContentPane(formulario2.getCartelera()); // Usar el método correcto
+                        frame.setContentPane(formulario2.getCartelera());
                     } else if ("administrador".equalsIgnoreCase(tipo)) {
                         frame.setContentPane(new AdminForm().AdministradorPanel);
                     }

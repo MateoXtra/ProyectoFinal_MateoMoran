@@ -1,8 +1,6 @@
 package Interfaz_Admin;
-import Interfaz_Cliente.form3;
-import Login_Registro.login;
 
-import java.util.ArrayDeque;
+import Login_Registro.login;
 import java.util.UUID;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -22,6 +20,7 @@ public class AdminForm {
     private JButton cargarEstadisticasButton;
     public JPanel AdministradorPanel;
     private JButton volverButton;
+    private JButton facturaClientesButton;
 
     // Datos de conexión
     String URL = "jdbc:mysql://localhost:3306/cine_reserva";
@@ -94,6 +93,7 @@ public class AdminForm {
                 cargarEstadisticas();
             }
         });
+
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -198,10 +198,6 @@ public class AdminForm {
     }
 
     private void agregarCliente() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reservas";
-        String USER = "root";
-        String PASSWORD = "123456";
-
         // Obtener datos del cliente
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
@@ -250,9 +246,6 @@ public class AdminForm {
         }
     }
 
-
-
-
     private void actualizarCliente() {
         // Lógica para actualizar cliente
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a actualizar:");
@@ -285,11 +278,15 @@ public class AdminForm {
         String queryUsuarios = "DELETE FROM usuarios WHERE correo = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(queryUsuarios)) {
+             PreparedStatement stmt = conn.prepareStatement(queryClientes)) {
 
             stmt.setString(1, correo);
-
             stmt.executeUpdate();
+
+            PreparedStatement stmtUsuarios = conn.prepareStatement(queryUsuarios);
+            stmtUsuarios.setString(1, correo);
+            stmtUsuarios.executeUpdate();
+
             JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
 
         } catch (SQLException e) {
@@ -300,7 +297,7 @@ public class AdminForm {
 
     private void cargarClientes() {
         // Lógica para cargar datos de clientes
-        String query = "SELECT correo, nombre FROM usuarios";
+        String query = "SELECT correo, nombre FROM clientes";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -339,8 +336,9 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Error al cargar las estadísticas.");
         }
     }
+
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Panel de Administracion ");
+        JFrame frame = new JFrame("Panel de Administración");
         frame.setContentPane(new AdminForm().AdministradorPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

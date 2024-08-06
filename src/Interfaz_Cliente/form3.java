@@ -1,5 +1,6 @@
 package Interfaz_Cliente;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,34 +15,28 @@ public class form3 {
     public JPanel reserva_asientos;
     private JSpinner spinner1;
     private JButton continuarButton;
-    private JLabel label; // Etiqueta para mostrar el total
+    private JLabel label;
     private String clienteCorreo;
-    private String idPelicula; // ID de la película proporcionado
-    private final int COSTO_ASIENTO = 3; // Costo por asiento
+    private String idPelicula;
+    private final int COSTO_ASIENTO = 3;
 
     public form3(String clienteCorreo, String idPelicula) {
         this.clienteCorreo = clienteCorreo;
         this.idPelicula = idPelicula;
 
-        // Inicializa el JPanel si es nulo
-        if (reserva_asientos == null) {
-            reserva_asientos = new JPanel();
-            spinner1 = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1)); // Establecer un rango razonable para los asientos
-            continuarButton = new JButton("Continuar");
-            label = new JLabel("Total: $0");
-            reserva_asientos.add(spinner1);
-            reserva_asientos.add(continuarButton);
-            reserva_asientos.add(label);
-        }
 
-        // Configura el ActionListener para el JSpinner
         spinner1.addChangeListener(e -> actualizarTotal());
 
-        continuarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int cantidadAsientos = (Integer) spinner1.getValue();
-                reservarAsientos(cantidadAsientos);
+        continuarButton.addActionListener(e -> {
+            int cantidadAsientos = (Integer) spinner1.getValue();
+            for (int i = 0; i < cantidadAsientos; i++) {
+                int idAsiento = obtenerAsientoDisponible();
+                if (idAsiento != -1) {
+                    reservarAsientos(idAsiento);
+                } else {
+                    JOptionPane.showMessageDialog(reserva_asientos, "No hay suficientes asientos disponibles.");
+                    break;
+                }
             }
         });
     }
@@ -52,78 +47,134 @@ public class form3 {
         label.setText("Total: $" + total);
     }
 
+    private int obtenerAsientoDisponible() {
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String USER = "root";
+        String PASSWORD = "123456";
+        String query = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT 1";
+        int idAsiento = -1;
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                idAsiento = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(reserva_asientos, "Error al obtener asiento disponible: " + e.getMessage());
+        }
+
+        return idAsiento;
+    }
     private void reservarAsientos(int cantidadAsientos) {
         String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
 
-        String queryReservas = "INSERT INTO reservas (id, cliente_id, pelicula_id, asiento_id, fecha_reserva) VALUES (?, ?, ?, ?, ?)";
-        String idReserva = UUID.randomUUID().toString();
+        String queryCheckAsientos = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT ?";
+        String queryReservas = "INSERT INTO reservas (id, cliente_id, pelicula_id, asiento_id) VALUES (?, ?, ?, ?)";
+        String queryUpdateAsiento = "UPDATE asientos SET reservado = TRUE WHERE id = ?";
+        String queryCliente = "SELECT nombre FROM clientes WHERE correo = ?";
+        String queryPelicula = "SELECT nombre_pelicula FROM peliculas WHERE id = ?";
 
-        // Recorre la cantidad de asientos seleccionados y realiza la reserva
+        // Generar IDs únicos para las reservas
+        List<String> idsReservas = new ArrayList<>();
+
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            for (int i = 0; i < cantidadAsientos; i++) {
-                // Generar ID único para cada reserva de asiento
-                String idReservaAsiento = UUID.randomUUID().toString();
+            try (PreparedStatement psCheck = connection.prepareStatement(queryCheckAsientos)) {
+                psCheck.setInt(1, cantidadAsientos);
+                ResultSet rs = psCheck.executeQuery();
 
-                // Seleccionar un asiento disponible
-                int idAsiento = obtenerAsientoDisponible(connection);
-                if (idAsiento == -1) {
-                    JOptionPane.showMessageDialog(reserva_asientos, "No hay asientos disponibles.");
-                    return;
-                }
+                int asientosReservados = 0;
+                while (rs.next() && asientosReservados < cantidadAsientos) {
+                    int idAsiento = rs.getInt("id");
+                    String idReserva = UUID.randomUUID().toString();
+                    idsReservas.add(idReserva);
 
-                // Insertar en la tabla reservas
-                try (PreparedStatement preparedStatement = connection.prepareStatement(queryReservas)) {
-                    preparedStatement.setString(1, idReservaAsiento);
-                    preparedStatement.setString(2, clienteCorreo);
-                    preparedStatement.setString(3, idPelicula);
-                    preparedStatement.setInt(4, idAsiento);
-                    preparedStatement.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
-                    preparedStatement.executeUpdate();
+                    // Insertar la reserva en la base de datos
+                    try (PreparedStatement psReserva = connection.prepareStatement(queryReservas)) {
+                        psReserva.setString(1, idReserva);
+                        psReserva.setString(2, clienteCorreo);
+                        psReserva.setString(3, idPelicula);
+                        psReserva.setInt(4, idAsiento);
+                        psReserva.executeUpdate();
+                    }
 
                     // Actualizar el estado del asiento
-                    actualizarEstadoAsiento(connection, idAsiento);
-                    int totalReserva = cantidadAsientos * COSTO_ASIENTO;
+                    try (PreparedStatement psUpdate = connection.prepareStatement(queryUpdateAsiento)) {
+                        psUpdate.setInt(1, idAsiento);
+                        psUpdate.executeUpdate();
+                    }
 
-                    JOptionPane.showMessageDialog(reserva_asientos, "Reserva de asientos realizada exitosamente.\nTotal: $" + totalReserva);
+                    asientosReservados++;
+                }
 
-                    // Mostrar formulario de factura
-                    JFrame frame = new JFrame("Factura");
-                    form4 facturaForm = new form4("NombreCliente", clienteCorreo, "NombrePelicula", cantidadAsientos, totalReserva);
-                    frame.setContentPane(facturaForm.getFacturaPanel());
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame.pack();
-                    frame.setVisible(true);
+                if (asientosReservados == cantidadAsientos) {
+                    // Obtener datos para la factura
+                    String nombreCliente = null;
+                    String nombrePelicula = null;
+
+                    try (PreparedStatement psCliente = connection.prepareStatement(queryCliente)) {
+                        psCliente.setString(1, clienteCorreo);
+                        ResultSet rsCliente = psCliente.executeQuery();
+                        if (rsCliente.next()) {
+                            nombreCliente = rsCliente.getString("nombre");
+                        }
+                    }
+
+                    try (PreparedStatement psPelicula = connection.prepareStatement(queryPelicula)) {
+                        psPelicula.setString(1, idPelicula);
+                        ResultSet rsPelicula = psPelicula.executeQuery();
+                        if (rsPelicula.next()) {
+                            nombrePelicula = rsPelicula.getString("nombre_pelicula");
+                        }
+                    }
+
+                    int total = cantidadAsientos * COSTO_ASIENTO;
+
+                    // Mostrar factura
+                    JFrame frameFactura = new JFrame("Factura");
+                    form4 facturaForm = new form4(nombreCliente, clienteCorreo, nombrePelicula, cantidadAsientos, total);
+                    frameFactura.setContentPane(facturaForm.getFacturaPanel());
+                    frameFactura.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frameFactura.pack();
+                    frameFactura.setVisible(true);
+
+                    // Cerrar el formulario de reserva de asientos
+                    JFrame frameReserva = (JFrame) SwingUtilities.getWindowAncestor(reserva_asientos);
+                    frameReserva.dispose();
+
+                    JOptionPane.showMessageDialog(reserva_asientos, "Reserva de asientos realizada exitosamente.");
+                } else {
+                    JOptionPane.showMessageDialog(reserva_asientos, "No se pudieron reservar todos los asientos.");
                 }
             }
-            JOptionPane.showMessageDialog(reserva_asientos, "Reserva de asientos realizada exitosamente.\nTotal: $" + (cantidadAsientos * COSTO_ASIENTO));
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(reserva_asientos, "Error al realizar la reserva: " + e.getMessage());
         }
     }
 
-    private int obtenerAsientoDisponible(Connection connection) {
-        String query = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT 1";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+
+
+    private String obtenerNombrePelicula(String idPelicula) {
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String USER = "root";
+        String PASSWORD = "123456";
+
+        String query = "SELECT nombre_pelicula FROM peliculas WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, idPelicula);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt("id");
+                return resultSet.getString("nombre_pelicula");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(reserva_asientos, "Error al obtener asiento disponible: " + e.getMessage());
+            JOptionPane.showMessageDialog(reserva_asientos, "Error al obtener nombre de la película: " + e.getMessage());
         }
-        return -1; // No hay asientos disponibles
+
+        return "";
     }
 
-    private void actualizarEstadoAsiento(Connection connection, int idAsiento) {
-        String query = "UPDATE asientos SET reservado = TRUE WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, idAsiento);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(reserva_asientos, "Error al actualizar el estado del asiento: " + e.getMessage());
-        }
-    }
 }

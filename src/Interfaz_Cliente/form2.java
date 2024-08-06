@@ -1,5 +1,4 @@
 package Interfaz_Cliente;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,53 +17,18 @@ public class form2 {
     private JButton CARNADAButton;
     private JButton DENOCHECONELButton;
     private JButton BLACKPINKBORNPINKButton;
-    private String clienteCorreo;
+    private final String clienteCorreo;
 
     public form2(String clienteCorreo) {
         this.clienteCorreo = clienteCorreo;
 
-        DEADPOOLYWOLVERINEButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("DEADPOOL Y WOLVERINE");
-            }
-        });
-        INTENSAMENTE2Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("INTENSAMENTE 2");
-            }
-        });
-        MIVILLANOFAVORITO4Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("MI VILLANO FAVORITO 4");
-            }
-        });
-        TORNADOSButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("TORNADOS");
-            }
-        });
-        CARNADAButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("CARNADA");
-            }
-        });
-        DENOCHECONELButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("DE NOCHE CON EL DIABLO");
-            }
-        });
-        BLACKPINKBORNPINKButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                agregarPelicula("BLACKPINK BORN PINK");
-            }
-        });
+        DEADPOOLYWOLVERINEButton.addActionListener(e -> agregarPelicula("DEADPOOL Y WOLVERINE"));
+        INTENSAMENTE2Button.addActionListener(e -> agregarPelicula("INTENSAMENTE 2"));
+        MIVILLANOFAVORITO4Button.addActionListener(e -> agregarPelicula("MI VILLANO FAVORITO 4"));
+        TORNADOSButton.addActionListener(e -> agregarPelicula("TORNADOS"));
+        CARNADAButton.addActionListener(e -> agregarPelicula("CARNADA"));
+        DENOCHECONELButton.addActionListener(e -> agregarPelicula("DE NOCHE CON EL DIABLO"));
+        BLACKPINKBORNPINKButton.addActionListener(e -> agregarPelicula("BLACKPINK BORN PINK"));
     }
 
     private void agregarPelicula(String nombrePelicula) {
@@ -89,7 +53,6 @@ public class form2 {
             if (filasAfectadas > 0) {
                 JOptionPane.showMessageDialog(null, "Película '" + nombrePelicula + "' agregada exitosamente.");
 
-                // Crear y mostrar form3 con el correo del cliente y el ID de la película
                 JFrame frame1 = new JFrame("Reserva de asientos");
                 form3 reservaForm = new form3(clienteCorreo, idPelicula);
                 frame1.setContentPane(reservaForm.reserva_asientos);
@@ -109,7 +72,6 @@ public class form2 {
         }
     }
 
-    // Método para obtener el JPanel cartelera
     public JPanel getCartelera() {
         return cartelera;
     }

@@ -1,27 +1,44 @@
 package Interfaz_Cliente;
 
+import Login_Registro.login;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class form4 {
     public JPanel factura;
-    private JLabel label0;
-    private JLabel labelnombre;
-    private JLabel labelcorreo;
-    private JLabel labelpelicula;
-    private JLabel label1numero_asientos;
-    private JLabel labeltotal;
-    private JLabel label1;
-    private JLabel label2;
-    private JLabel label3;
-    private JLabel label4;
-    private JLabel label5;
+    private JLabel labelfactura;
+    private JLabel labelnombre; // Nombre del cliente
+    private JLabel labelcorreo; // Correo del cliente
+    private JLabel labelpelicula; // Nombre de la película
+    private JLabel label1numero_asientos; // Número de asientos
+    private JLabel labeltotal; // Total a pagar
+    private JButton volverAlLoginButton;
 
     public form4(String nombreCliente, String correoCliente, String nombrePelicula, int numeroAsientos, int total) {
-        label1.setText(nombreCliente);
-        label2.setText(correoCliente);
-        label3.setText(nombrePelicula);
-        label4.setText(String.valueOf(numeroAsientos));
-        label5.setText("$" + total);
+        // Configurar los componentes
+        labelfactura.setText("Factura");
+        labelnombre.setText("Nombre: " + nombreCliente);
+        labelcorreo.setText("Correo: " + correoCliente);
+        labelpelicula.setText("Película: " + nombrePelicula);
+        label1numero_asientos.setText("Número de asientos: " + numeroAsientos);
+        labeltotal.setText("Total: $" + total);
+
+
+        volverAlLoginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame1 = new JFrame("Login");
+                frame1.setContentPane(new login().panel_login);
+                frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame1.pack();
+                frame1.setVisible(true);
+
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(factura);
+                frame.dispose();
+            }
+        });
     }
 
     public JPanel getFacturaPanel() {
