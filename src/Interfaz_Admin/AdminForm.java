@@ -256,10 +256,8 @@ public class AdminForm {
     }
 
     private void eliminarCliente() {
-        // Obtener el correo del cliente a eliminar
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a eliminar:");
 
-        // Consultas SQL para eliminar las reservas, el cliente y el usuario asociado
         String queryReservas = "DELETE FROM reservas WHERE cliente_id = ?";
         String queryClientes = "DELETE FROM clientes WHERE correo = ?";
         String queryUsuarios = "DELETE FROM usuarios WHERE correo = ?";
