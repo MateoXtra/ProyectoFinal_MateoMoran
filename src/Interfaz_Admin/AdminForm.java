@@ -283,7 +283,7 @@ public class AdminForm {
                 }
 
             } catch (SQLIntegrityConstraintViolationException e) {
-                JOptionPane.showMessageDialog(null, "No se pudo eliminar el cliente debido a restricciones de integridad.");
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar el cliente debido a que tiene una reserva.");
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Error al eliminar el cliente: " + e.getMessage());
             }
