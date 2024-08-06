@@ -20,7 +20,6 @@ public class AdminForm {
     private JButton cargarEstadisticasButton;
     public JPanel AdministradorPanel;
     private JButton volverButton;
-    private JButton facturaClientesButton;
 
     // Datos de conexión
     String URL = "jdbc:mysql://localhost:3306/cine_reserva";
@@ -110,7 +109,6 @@ public class AdminForm {
     }
 
     private void agregarPelicula() {
-        // Lógica para agregar película
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la película:");
         String horario = JOptionPane.showInputDialog("Ingrese el horario (en formato JSON):");
 
@@ -133,7 +131,6 @@ public class AdminForm {
     }
 
     private void actualizarPelicula() {
-        // Lógica para actualizar película
         String id = JOptionPane.showInputDialog("Ingrese el ID de la película a actualizar:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la película:");
         String horario = JOptionPane.showInputDialog("Ingrese el nuevo horario (en formato JSON):");
@@ -157,7 +154,6 @@ public class AdminForm {
     }
 
     private void eliminarPelicula() {
-        // Lógica para eliminar película
         String id = JOptionPane.showInputDialog("Ingrese el ID de la película a eliminar:");
 
         String query = "DELETE FROM peliculas WHERE id = ?";
@@ -177,7 +173,6 @@ public class AdminForm {
     }
 
     private void cargarPeliculas() {
-        // Lógica para cargar datos de películas
         String query = "SELECT id, nombre_pelicula, horario FROM peliculas";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -198,38 +193,30 @@ public class AdminForm {
     }
 
     private void agregarCliente() {
-        // Obtener datos del cliente
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
         String contrasena = JOptionPane.showInputDialog("Ingrese la contraseña del cliente:");
 
-        // Validar datos de entrada
         if (correo == null || correo.isEmpty() || nombre == null || nombre.isEmpty() || contrasena == null || contrasena.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos deben ser completados.");
             return;
         }
 
-        // Validar que el correo termine en "@gmail.com"
         if (!correo.endsWith("@gmail.com")) {
             JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
             return;
         }
-
-        // Consulta SQL para insertar un nuevo cliente
         String query = "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Configurar parámetros de la consulta
             stmt.setString(1, correo);
             stmt.setString(2, nombre);
             stmt.setString(3, contrasena);
 
-            // Ejecutar la consulta
             int rowsAffected = stmt.executeUpdate();
 
-            // Verificar si la inserción fue exitosa
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente.");
             } else {
@@ -237,17 +224,15 @@ public class AdminForm {
             }
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            // Manejo específico para violación de restricciones de integridad
             JOptionPane.showMessageDialog(null, "El correo ya está registrado. Intenta con otro.");
         } catch (SQLException e) {
-            // Manejo genérico para otros errores SQL
             System.out.println("Error en la base de datos: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al agregar el cliente: " + e.getMessage());
         }
     }
 
+
     private void actualizarCliente() {
-        // Lógica para actualizar cliente
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a actualizar:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del cliente:");
         String contrasena = JOptionPane.showInputDialog("Ingrese la nueva contraseña del cliente:");
@@ -271,32 +256,48 @@ public class AdminForm {
     }
 
     private void eliminarCliente() {
-        // Lógica para eliminar usuarios
+        // Obtener el correo del cliente a eliminar
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a eliminar:");
 
+        // Consultas SQL para eliminar las reservas, el cliente y el usuario asociado
+        String queryReservas = "DELETE FROM reservas WHERE cliente_id = ?";
         String queryClientes = "DELETE FROM clientes WHERE correo = ?";
         String queryUsuarios = "DELETE FROM usuarios WHERE correo = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(queryClientes)) {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            try (PreparedStatement stmtReservas = conn.prepareStatement(queryReservas)) {
+                stmtReservas.setString(1, correo);
+                stmtReservas.executeUpdate();
+            }
 
-            stmt.setString(1, correo);
-            stmt.executeUpdate();
+            try (PreparedStatement stmtClientes = conn.prepareStatement(queryClientes)) {
+                stmtClientes.setString(1, correo);
+                int rowsClientes = stmtClientes.executeUpdate();
 
-            PreparedStatement stmtUsuarios = conn.prepareStatement(queryUsuarios);
-            stmtUsuarios.setString(1, correo);
-            stmtUsuarios.executeUpdate();
+                if (rowsClientes > 0) {
+                    try (PreparedStatement stmtUsuarios = conn.prepareStatement(queryUsuarios)) {
+                        stmtUsuarios.setString(1, correo);
+                        stmtUsuarios.executeUpdate();
+                    }
+                    JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "El cliente no existe o ya ha sido eliminado.");
+                }
 
-            JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
+            } catch (SQLIntegrityConstraintViolationException e) {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar el cliente debido a restricciones de integridad.");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al eliminar el cliente: " + e.getMessage());
+            }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al eliminar el cliente.");
+            JOptionPane.showMessageDialog(null, "Error en la conexión a la base de datos: " + e.getMessage());
         }
     }
 
+
+
     private void cargarClientes() {
-        // Lógica para cargar datos de clientes
         String query = "SELECT correo, nombre FROM clientes";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query);
@@ -316,7 +317,6 @@ public class AdminForm {
     }
 
     private void cargarEstadisticas() {
-        // Lógica para cargar estadísticas de ocupación y ventas
         String queryOcupacion = "SELECT p.nombre_pelicula, COUNT(r.id) as reservas FROM reservas r " +
                 "JOIN peliculas p ON r.pelicula_id = p.id GROUP BY r.pelicula_id";
 
@@ -332,7 +332,7 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, estadisticas.toString());
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al cargar las estadísticas.");
         }
     }
