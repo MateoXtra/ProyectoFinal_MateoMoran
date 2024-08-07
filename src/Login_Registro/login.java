@@ -1,5 +1,5 @@
 package Login_Registro;
-
+import org.mindrot.jbcrypt.BCrypt;
 import Interfaz_Admin.AdminForm;
 import Interfaz_Cliente.form2;
 import javax.swing.*;
@@ -116,6 +116,7 @@ public class login {
                 JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
                 return;
             }
+            String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
 
             String queryUsuarios = "INSERT INTO usuarios (correo, nombre, contrasena, tipo) VALUES (?, ?, ?, ?)";
             String querySpecific = tipo.equals("Cliente") ?
@@ -126,7 +127,7 @@ public class login {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(queryUsuarios)) {
                     preparedStatement.setString(1, correo);
                     preparedStatement.setString(2, nombre);
-                    preparedStatement.setString(3, contrasena);
+                    preparedStatement.setString(3, hashedPassword);
                     preparedStatement.setString(4, tipo.toLowerCase());
                     preparedStatement.executeUpdate();
                 }
@@ -134,7 +135,7 @@ public class login {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(querySpecific)) {
                     preparedStatement.setString(1, correo);
                     preparedStatement.setString(2, nombre);
-                    preparedStatement.setString(3, contrasena);
+                    preparedStatement.setString(3, hashedPassword);
                     preparedStatement.executeUpdate();
                 }
 

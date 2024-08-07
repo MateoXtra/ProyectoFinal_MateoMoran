@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-
+import org.mindrot.jbcrypt.BCrypt;
 public class AdminForm {
     private JButton agregarButton;
     private JButton agregarPeliculaButton;
@@ -208,25 +208,20 @@ public class AdminForm {
             JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
             return;
         }
-        String query = "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)";
+        String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+
+        String queryInsert = "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmtInsert = conn.prepareStatement(queryInsert)) {
 
-            stmt.setString(1, correo);
-            stmt.setString(2, nombre);
-            stmt.setString(3, contrasena);
+            stmtInsert.setString(1, correo);
+            stmtInsert.setString(2, nombre);
+            stmtInsert.setString(3, hashedPassword);
+            stmtInsert.executeUpdate();
 
-            int rowsAffected = stmt.executeUpdate();
-
-            if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar el cliente.");
-            }
 
-        } catch (SQLIntegrityConstraintViolationException e) {
-            JOptionPane.showMessageDialog(null, "El correo ya está registrado. Intenta con otro.");
         } catch (SQLException e) {
             System.out.println("Error en la base de datos: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al agregar el cliente: " + e.getMessage());
@@ -239,28 +234,26 @@ public class AdminForm {
         String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del cliente:");
         String contrasena = JOptionPane.showInputDialog("Ingrese la nueva contraseña del cliente:");
 
-        String query = "UPDATE clientes SET nombre = ?, contrasena = ? WHERE correo = ?";
-        String queryusuarios = "UPDATE usuarios SET nombre = ?, contrasena = ? WHERE correo = ?";
+        String queryClientes = "UPDATE clientes SET nombre = ?, contrasena = ? WHERE correo = ?";
+        String queryUsuarios = "UPDATE usuarios SET nombre = ?, contrasena = ? WHERE correo = ?";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            try (PreparedStatement stmtClientes = conn.prepareStatement(queryClientes)) {
+                stmtClientes.setString(1, nombre);
+                stmtClientes.setString(2, contrasena);
+                stmtClientes.setString(3, correo);
+                stmtClientes.executeUpdate();
+            }
+            try (PreparedStatement stmtUsuarios = conn.prepareStatement(queryUsuarios)) {
+                stmtUsuarios.setString(1, nombre);
+                stmtUsuarios.setString(2, contrasena);
+                stmtUsuarios.setString(3, correo);
+                stmtUsuarios.executeUpdate();
+            }
 
-            stmt.setString(1, nombre);
-            stmt.setString(2, contrasena);
-            stmt.setString(3, correo);
-
-            stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Cliente actualizado exitosamente.");
 
-        }
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);){
-            PreparedStatement stmtusuarios = conn.prepareStatement(queryusuarios);
-            stmtusuarios.setString(1, correo);
-            stmtusuarios.setString(2, nombre);
-            stmtusuarios.setString(3, contrasena);
-            stmtusuarios.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al actualizar el cliente.");
         }
@@ -269,42 +262,46 @@ public class AdminForm {
     private void eliminarCliente() {
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a eliminar:");
 
-        String queryReservas = "DELETE FROM reservas WHERE cliente_id = ?";
-        String queryClientes = "DELETE FROM clientes WHERE correo = ?";
-        String queryUsuarios = "DELETE FROM usuarios WHERE correo = ?";
+        String queryReservas = "SELECT asiento_id FROM reservas WHERE cliente_id = ?";
+        String queryEliminarReservas = "DELETE FROM reservas WHERE cliente_id = ?";
+        String queryActualizarAsiento = "UPDATE asientos SET reservado = FALSE WHERE id = ?";
+        String queryEliminarClientes = "DELETE FROM clientes WHERE correo = ?";
+        String queryEliminarUsuarios = "DELETE FROM usuarios WHERE correo = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
             try (PreparedStatement stmtReservas = conn.prepareStatement(queryReservas)) {
                 stmtReservas.setString(1, correo);
-                stmtReservas.executeUpdate();
-            }
+                ResultSet rs = stmtReservas.executeQuery();
 
-            try (PreparedStatement stmtClientes = conn.prepareStatement(queryClientes)) {
-                stmtClientes.setString(1, correo);
-                int rowsClientes = stmtClientes.executeUpdate();
-
-                if (rowsClientes > 0) {
-                    try (PreparedStatement stmtUsuarios = conn.prepareStatement(queryUsuarios)) {
-                        stmtUsuarios.setString(1, correo);
-                        stmtUsuarios.executeUpdate();
+                while (rs.next()) {
+                    int asientoId = rs.getInt("asiento_id");
+                    try (PreparedStatement stmtActualizarAsiento = conn.prepareStatement(queryActualizarAsiento)) {
+                        stmtActualizarAsiento.setInt(1, asientoId);
+                        stmtActualizarAsiento.executeUpdate();
                     }
-                    JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "El cliente no existe o ya ha sido eliminado.");
                 }
-
-            } catch (SQLIntegrityConstraintViolationException e) {
-                JOptionPane.showMessageDialog(null, "No se pudo eliminar el cliente debido a que tiene una reserva.");
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error al eliminar el cliente: " + e.getMessage());
             }
+
+            try (PreparedStatement stmtEliminarReservas = conn.prepareStatement(queryEliminarReservas)) {
+                stmtEliminarReservas.setString(1, correo);
+                stmtEliminarReservas.executeUpdate();
+            }
+            try (PreparedStatement stmtEliminarClientes = conn.prepareStatement(queryEliminarClientes)) {
+                stmtEliminarClientes.setString(1, correo);
+                stmtEliminarClientes.executeUpdate();
+            }
+            try (PreparedStatement stmtEliminarUsuarios = conn.prepareStatement(queryEliminarUsuarios)) {
+                stmtEliminarUsuarios.setString(1, correo);
+                stmtEliminarUsuarios.executeUpdate();
+            }
+
+            JOptionPane.showMessageDialog(null, "Cliente eliminado exitosamente.");
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error en la conexión a la base de datos: " + e.getMessage());
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al eliminar el cliente: " + e.getMessage());
         }
     }
-
-
 
     private void cargarClientes() {
         String query = "SELECT correo, nombre FROM clientes";
