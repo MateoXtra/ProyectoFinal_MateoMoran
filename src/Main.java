@@ -31,7 +31,6 @@ public class Main {
         String PASSWORD = "123456";
 
         /* URL y credenciales de conexión a la nube.
-
         String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
         String PASSWORD = "MA6tTZqL72";*/
