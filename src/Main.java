@@ -8,13 +8,13 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) {
 
-        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";*/
+        String PASSWORD = "123456";
 
-        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";
+        String PASSWORD = "MA6tTZqL72";*/
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             if (connection != null) {

@@ -21,13 +21,13 @@ public class AdminForm {
     public JPanel AdministradorPanel;
     private JButton volverButton;
 
-        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-        String USER = "root";
-        String PASSWORD = "123456";*/
+            String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+            String USER = "root";
+            String PASSWORD = "123456";
 
-        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";
+        String PASSWORD = "MA6tTZqL72";*/
 
     public AdminForm() {
         // Gestión de Películas
@@ -240,6 +240,7 @@ public class AdminForm {
         String contrasena = JOptionPane.showInputDialog("Ingrese la nueva contraseña del cliente:");
 
         String query = "UPDATE clientes SET nombre = ?, contrasena = ? WHERE correo = ?";
+        String queryusuarios = "UPDATE usuarios SET nombre = ?, contrasena = ? WHERE correo = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -251,7 +252,15 @@ public class AdminForm {
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Cliente actualizado exitosamente.");
 
-        } catch (SQLException e) {
+        }
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);){
+            PreparedStatement stmtusuarios = conn.prepareStatement(queryusuarios);
+            stmtusuarios.setString(1, correo);
+            stmtusuarios.setString(2, nombre);
+            stmtusuarios.setString(3, contrasena);
+            stmtusuarios.executeUpdate();
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al actualizar el cliente.");
         }

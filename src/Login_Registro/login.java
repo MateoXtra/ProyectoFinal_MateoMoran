@@ -34,13 +34,13 @@ public class login {
     }
 
     private void login() {
-        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";*/
+        String PASSWORD = "123456";
 
-        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";
+        String PASSWORD = "MA6tTZqL72";*/
 
         String correo = textField1.getText();
         String contrasena = new String(passwordField1.getPassword());
@@ -79,13 +79,13 @@ public class login {
     }
 
     public void registrarse() {
-        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";*/
+        String PASSWORD = "123456";
 
-        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";
+        String PASSWORD = "MA6tTZqL72";*/
 
         JTextField correoField = new JTextField();
         JTextField nombreField = new JTextField();

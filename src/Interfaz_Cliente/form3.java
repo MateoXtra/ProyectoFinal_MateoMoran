@@ -48,13 +48,13 @@ public class form3 {
     }
 
     private int obtenerAsientoDisponible() {
-        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";*/
+        String PASSWORD = "123456";
 
-        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";
+        String PASSWORD = "MA6tTZqL72";*/
 
         String query = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT 1";
         int idAsiento = -1;
@@ -75,6 +75,10 @@ public class form3 {
         String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
         String PASSWORD = "123456";
+
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";*/
 
         String queryCheckAsientos = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT ?";
         String queryReservas = "INSERT INTO reservas (id, cliente_id, pelicula_id, asiento_id) VALUES (?, ?, ?, ?)";
@@ -161,13 +165,13 @@ public class form3 {
 
 
     private String obtenerNombrePelicula(String idPelicula) {
-        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";*/
+        String PASSWORD = "123456";
 
-        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
         String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";
+        String PASSWORD = "MA6tTZqL72";*/
 
         String query = "SELECT nombre_pelicula FROM peliculas WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
