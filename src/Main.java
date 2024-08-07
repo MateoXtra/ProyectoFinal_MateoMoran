@@ -4,6 +4,16 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+/**
+ * Es el punto de entrada de la aplicación que
+ * establece una conexión con la base de datos y muestra la interfaz de
+ * inicio de sesión del sistema de reservas de cine.
+ *
+ * En el método main, se realiza la conexión con la base de
+ * datos y se inicializa la ventana de la aplicación.
+ *
+ * @author Mateo Morán
+ */
 
 public class Main {
     public static void main(String[] args) {
