@@ -51,25 +51,27 @@ public class login {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, correo);
-            preparedStatement.setString(2, contrasena);
-            preparedStatement.setString(3, tipo.toLowerCase());
+            preparedStatement.setString(2, tipo.toLowerCase());
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String hashedPassword = resultSet.getString("contrasena");
                     if (BCrypt.checkpw(contrasena, hashedPassword)) {
-                    JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso como " + tipo);
-                    JFrame frame = new JFrame();
-                    if ("cliente".equalsIgnoreCase(tipo)) {
-                        form2 formulario2 = new form2(correo);
-                        frame.setContentPane(formulario2.getCartelera());
-                    } else if ("administrador".equalsIgnoreCase(tipo)) {
-                        frame.setContentPane(new AdminForm().AdministradorPanel);
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso como " + tipo);
+                        JFrame frame = new JFrame();
+                        if ("cliente".equalsIgnoreCase(tipo)) {
+                            form2 formulario2 = new form2(correo);
+                            frame.setContentPane(formulario2.getCartelera());
+                        } else if ("administrador".equalsIgnoreCase(tipo)) {
+                            frame.setContentPane(new AdminForm().AdministradorPanel);
+                        }
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        frame.pack();
+                        frame.setVisible(true);
+                        SwingUtilities.getWindowAncestor(button1).dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
                     }
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame.pack();
-                    frame.setVisible(true);
-                    SwingUtilities.getWindowAncestor(button1).dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
                 }
