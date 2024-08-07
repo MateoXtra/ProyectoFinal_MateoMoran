@@ -234,19 +234,21 @@ public class AdminForm {
         String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del cliente:");
         String contrasena = JOptionPane.showInputDialog("Ingrese la nueva contraseña del cliente:");
 
+        String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+
         String queryClientes = "UPDATE clientes SET nombre = ?, contrasena = ? WHERE correo = ?";
         String queryUsuarios = "UPDATE usuarios SET nombre = ?, contrasena = ? WHERE correo = ?";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
             try (PreparedStatement stmtClientes = conn.prepareStatement(queryClientes)) {
                 stmtClientes.setString(1, nombre);
-                stmtClientes.setString(2, contrasena);
+                stmtClientes.setString(2, hashedPassword);
                 stmtClientes.setString(3, correo);
                 stmtClientes.executeUpdate();
             }
             try (PreparedStatement stmtUsuarios = conn.prepareStatement(queryUsuarios)) {
                 stmtUsuarios.setString(1, nombre);
-                stmtUsuarios.setString(2, contrasena);
+                stmtUsuarios.setString(2, hashedPassword);
                 stmtUsuarios.setString(3, correo);
                 stmtUsuarios.executeUpdate();
             }
