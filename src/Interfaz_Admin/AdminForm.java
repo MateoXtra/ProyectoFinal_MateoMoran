@@ -226,40 +226,80 @@ public class AdminForm {
      * Agrega un nuevo cliente a la base de datos.
      */
     private void agregarCliente() {
-        String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente:");
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
-        String contrasena = JOptionPane.showInputDialog("Ingrese la contraseña del cliente:");
+        // URL, usuario y contraseña para la conexión a la base de datos
+        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String USER = "root";
+        String PASSWORD = "123456";
 
-        if (correo == null || correo.isEmpty() || nombre == null || nombre.isEmpty() || contrasena == null || contrasena.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos deben ser completados.");
-            return;
-        }
+       /* URL y credenciales de conexión a la nube.
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";*/
 
-        // Validar formato del correo
-        if (!correo.endsWith("@gmail.com")) {
-            JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
-            return;
-        }
-        // Hashear contraseña
-        String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+        // Crear campos de entrada para el registro
+        JTextField correoField = new JTextField();
+        JTextField nombreField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        String[] options = {"Cliente", "Administrador"};
+        JComboBox<String> tipoBox = new JComboBox<>(options);
 
-        // Consulta SQL para agregar clientes
-        String queryInsert = "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)";
+        Object[] fields = {
+                "Correo:", correoField,
+                "Nombre:", nombreField,
+                "Contraseña:", passwordField,
+                "Tipo:", tipoBox
+        };
 
-        // Intentar la conexion para agregar clientes
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement stmtInsert = conn.prepareStatement(queryInsert)) {
+        int result = JOptionPane.showConfirmDialog(null, fields, "Registro", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String correo = correoField.getText();
+            String nombre = nombreField.getText();
+            String contrasena = new String(passwordField.getPassword());
+            String tipo = (String) tipoBox.getSelectedItem();
 
-            stmtInsert.setString(1, correo);
-            stmtInsert.setString(2, nombre);
-            stmtInsert.setString(3, hashedPassword);
-            stmtInsert.executeUpdate();
+            // Validar el formato del correo según el tipo de usuario
+            if (tipo.equals("Administrador") && !correo.endsWith("@admincine.com")) {
+                JOptionPane.showMessageDialog(null, "Para registrar un administrador, el correo debe terminar en '@admincine.com'.");
+                return;
+            }
 
-                JOptionPane.showMessageDialog(null, "Cliente agregado exitosamente.");
+            if (tipo.equals("Cliente") && !correo.endsWith("@gmail.com")) {
+                JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
+                return;
+            }
 
-        } catch (SQLException e) {
-            System.out.println("Error en la base de datos: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error al agregar el cliente: " + e.getMessage());
+            // Hash de la contraseña usando BCrypt
+            String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
+
+            // Consultas SQL para insertar los datos del usuario
+            String queryUsuarios = "INSERT INTO usuarios (correo, nombre, contrasena, tipo) VALUES (?, ?, ?, ?)";
+            String querySpecific = tipo.equals("Cliente") ?
+                    "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)" :
+                    "INSERT INTO administrador (correo, nombre, contrasena) VALUES (?, ?, ?)";
+
+            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(queryUsuarios)) {
+                    preparedStatement.setString(1, correo);
+                    preparedStatement.setString(2, nombre);
+                    preparedStatement.setString(3, hashedPassword);
+                    preparedStatement.setString(4, tipo.toLowerCase());
+                    preparedStatement.executeUpdate();
+                }
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(querySpecific)) {
+                    preparedStatement.setString(1, correo);
+                    preparedStatement.setString(2, nombre);
+                    preparedStatement.setString(3, hashedPassword);
+                    preparedStatement.executeUpdate();
+                }
+
+                JOptionPane.showMessageDialog(null, tipo + " registrado exitosamente.");
+            } catch (SQLIntegrityConstraintViolationException e) {
+                JOptionPane.showMessageDialog(null, "El correo ya está registrado. Intenta con otro.");
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al registrar " + tipo + ": " + ex.getMessage());
+            }
         }
     }
 
