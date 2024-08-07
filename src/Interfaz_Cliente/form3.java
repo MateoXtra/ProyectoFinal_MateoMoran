@@ -10,6 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+/**
+ * La clase <code>form3</code> representa la interfaz para la reserva de asientos para una película.
+ * Permite al cliente seleccionar la cantidad de asientos y realizar la reserva.
+ *
+ * @author Mateo Morán
+ */
 
 public class form3 {
     public JPanel reserva_asientos;
@@ -19,14 +25,22 @@ public class form3 {
     private String clienteCorreo;
     private String idPelicula;
     private final int COSTO_ASIENTO = 3;
+    /**
+     * Constructor de la clase <code>form3</code>.
+     * Inicializa los componentes de la interfaz y configura los eventos para los botones y el spinner.
+     *
+     * @param clienteCorreo Correo electrónico del cliente para la reserva de asientos.
+     * @param idPelicula ID de la película para la que se están reservando los asientos.
+     */
 
     public form3(String clienteCorreo, String idPelicula) {
         this.clienteCorreo = clienteCorreo;
         this.idPelicula = idPelicula;
 
-
+        // Configurar ChangeListener para el spinner para actualizar el total de la reserva
         spinner1.addChangeListener(e -> actualizarTotal());
 
+        // Configurar ActionListener para el botón de continuar para procesar la reserva
         continuarButton.addActionListener(e -> {
             int cantidadAsientos = (Integer) spinner1.getValue();
             for (int i = 0; i < cantidadAsientos; i++) {
@@ -41,12 +55,20 @@ public class form3 {
         });
     }
 
+    /**
+     * Actualiza el total de la reserva en función de la cantidad de asientos seleccionados.
+     */
     private void actualizarTotal() {
         int cantidadAsientos = (Integer) spinner1.getValue();
         int total = cantidadAsientos * COSTO_ASIENTO;
         label.setText("Total: $" + total);
     }
 
+    /**
+     * Obtiene un asiento disponible para reservar.
+     *
+     * @return ID del asiento disponible o -1 si no hay asientos disponibles.
+     */
     private int obtenerAsientoDisponible() {
         String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
@@ -56,6 +78,7 @@ public class form3 {
         String USER = "sql10724198";
         String PASSWORD = "MA6tTZqL72";*/
 
+        // Consulta SQL para obtener un asiento no reservado
         String query = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT 1";
         int idAsiento = -1;
 
@@ -71,6 +94,12 @@ public class form3 {
 
         return idAsiento;
     }
+
+    /**
+     * Reserva los asientos seleccionados y genera una factura.
+     *
+     * @param cantidadAsientos Cantidad de asientos a reservar.
+     */
     private void reservarAsientos(int cantidadAsientos) {
         String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
@@ -80,6 +109,7 @@ public class form3 {
         String USER = "sql10724198";
         String PASSWORD = "MA6tTZqL72";*/
 
+        // Consultas SQL para verificar asientos, insertar reservas y actualizar asientos
         String queryCheckAsientos = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT ?";
         String queryReservas = "INSERT INTO reservas (id, cliente_id, pelicula_id, asiento_id) VALUES (?, ?, ?, ?)";
         String queryUpdateAsiento = "UPDATE asientos SET reservado = TRUE WHERE id = ?";
@@ -89,6 +119,7 @@ public class form3 {
         // Generar IDs únicos para las reservas
         List<String> idsReservas = new ArrayList<>();
 
+        // Intentar establecer la conexión con la base de datos y procesar la reserva
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             try (PreparedStatement psCheck = connection.prepareStatement(queryCheckAsientos)) {
                 psCheck.setInt(1, cantidadAsientos);
@@ -141,6 +172,7 @@ public class form3 {
 
                     int total = cantidadAsientos * COSTO_ASIENTO;
 
+                    // Mostrar la factura
                     JFrame frameFactura = new JFrame("Factura");
                     form4 facturaForm = new form4(nombreCliente, clienteCorreo, nombrePelicula, cantidadAsientos, total);
                     frameFactura.setContentPane(facturaForm.getFacturaPanel());
@@ -148,6 +180,7 @@ public class form3 {
                     frameFactura.pack();
                     frameFactura.setVisible(true);
 
+                    // Cerrar la ventana de reserva
                     JFrame frameReserva = (JFrame) SwingUtilities.getWindowAncestor(reserva_asientos);
                     frameReserva.dispose();
 
@@ -157,12 +190,16 @@ public class form3 {
                 }
             }
         } catch (SQLException e) {
+            // Mostrar mensaje de error si ocurre un problema con la base de datos
             JOptionPane.showMessageDialog(reserva_asientos, "Error al realizar la reserva: " + e.getMessage());
         }
     }
-
-
-
+    /**
+     * Obtiene el nombre de la película a partir del ID.
+     *
+     * @param idPelicula ID de la película.
+     * @return Nombre de la película.
+     */
 
     private String obtenerNombrePelicula(String idPelicula) {
         String URL = "jdbc:mysql://localhost:3306/cine_reserva";
@@ -173,6 +210,7 @@ public class form3 {
         String USER = "sql10724198";
         String PASSWORD = "MA6tTZqL72";*/
 
+        // Consulta SQL para obtener el nombre de la película
         String query = "SELECT nombre_pelicula FROM peliculas WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -182,6 +220,7 @@ public class form3 {
                 return resultSet.getString("nombre_pelicula");
             }
         } catch (SQLException e) {
+            // Mostrar mensaje de error si ocurre un problema con la base de datos
             JOptionPane.showMessageDialog(reserva_asientos, "Error al obtener nombre de la película: " + e.getMessage());
         }
 
