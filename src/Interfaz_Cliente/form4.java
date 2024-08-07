@@ -17,7 +17,6 @@ public class form4 {
     private JButton volverAlLoginButton;
 
     public form4(String nombreCliente, String correoCliente, String nombrePelicula, int numeroAsientos, int total) {
-        // Configurar los componentes
         labelfactura.setText("Factura");
         labelnombre.setText("Nombre: " + nombreCliente);
         labelcorreo.setText("Correo: " + correoCliente);

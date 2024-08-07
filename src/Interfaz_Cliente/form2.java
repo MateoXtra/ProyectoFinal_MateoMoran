@@ -32,9 +32,13 @@ public class form2 {
     }
 
     private void agregarPelicula(String nombrePelicula) {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "123456";*/
+
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";
 
         String queryPeliculas = "INSERT INTO peliculas (id, nombre_pelicula, horario) VALUES (?, ?, ?)";
 
@@ -60,7 +64,6 @@ public class form2 {
                 frame1.pack();
                 frame1.setVisible(true);
 
-                // Cerrar el formulario actual
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(cartelera);
                 frame.dispose();
             } else {

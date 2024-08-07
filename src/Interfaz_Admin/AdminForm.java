@@ -21,10 +21,13 @@ public class AdminForm {
     public JPanel AdministradorPanel;
     private JButton volverButton;
 
-    // Datos de conexión
-    String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-    String USER = "root";
-    String PASSWORD = "123456";
+        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        String USER = "root";
+        String PASSWORD = "123456";*/
+
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";
 
     public AdminForm() {
         // Gestión de Películas
@@ -85,7 +88,6 @@ public class AdminForm {
             }
         });
 
-        // Estadísticas
         cargarEstadisticasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

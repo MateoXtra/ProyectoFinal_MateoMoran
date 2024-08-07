@@ -34,9 +34,13 @@ public class login {
     }
 
     private void login() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "123456";*/
+
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";
 
         String correo = textField1.getText();
         String contrasena = new String(passwordField1.getPassword());
@@ -53,7 +57,6 @@ public class login {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso como " + tipo);
-                    // Redirigir al usuario según su tipo
                     JFrame frame = new JFrame();
                     if ("cliente".equalsIgnoreCase(tipo)) {
                         form2 formulario2 = new form2(correo);
@@ -76,9 +79,13 @@ public class login {
     }
 
     public void registrarse() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "123456";*/
+
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";
 
         JTextField correoField = new JTextField();
         JTextField nombreField = new JTextField();
@@ -100,27 +107,22 @@ public class login {
             String contrasena = new String(passwordField.getPassword());
             String tipo = (String) tipoBox.getSelectedItem();
 
-            // Validación para correos de administradores
             if (tipo.equals("Administrador") && !correo.endsWith("@admincine.com")) {
                 JOptionPane.showMessageDialog(null, "Para registrar un administrador, el correo debe terminar en '@admincine.com'.");
                 return;
             }
 
-            // Validación para correos de clientes
             if (tipo.equals("Cliente") && !correo.endsWith("@gmail.com")) {
                 JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
                 return;
             }
 
-            // Insertar en la tabla usuarios
             String queryUsuarios = "INSERT INTO usuarios (correo, nombre, contrasena, tipo) VALUES (?, ?, ?, ?)";
-            // Insertar en la tabla específica
             String querySpecific = tipo.equals("Cliente") ?
                     "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)" :
                     "INSERT INTO administrador (correo, nombre, contrasena) VALUES (?, ?, ?)";
 
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-                // Insertar en usuarios
                 try (PreparedStatement preparedStatement = connection.prepareStatement(queryUsuarios)) {
                     preparedStatement.setString(1, correo);
                     preparedStatement.setString(2, nombre);
@@ -129,7 +131,6 @@ public class login {
                     preparedStatement.executeUpdate();
                 }
 
-                // Insertar en tabla específica
                 try (PreparedStatement preparedStatement = connection.prepareStatement(querySpecific)) {
                     preparedStatement.setString(1, correo);
                     preparedStatement.setString(2, nombre);

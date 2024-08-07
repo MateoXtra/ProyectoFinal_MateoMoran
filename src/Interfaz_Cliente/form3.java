@@ -48,9 +48,14 @@ public class form3 {
     }
 
     private int obtenerAsientoDisponible() {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "123456";*/
+
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";
+
         String query = "SELECT id FROM asientos WHERE reservado = FALSE LIMIT 1";
         int idAsiento = -1;
 
@@ -132,7 +137,6 @@ public class form3 {
 
                     int total = cantidadAsientos * COSTO_ASIENTO;
 
-                    // Mostrar factura
                     JFrame frameFactura = new JFrame("Factura");
                     form4 facturaForm = new form4(nombreCliente, clienteCorreo, nombrePelicula, cantidadAsientos, total);
                     frameFactura.setContentPane(facturaForm.getFacturaPanel());
@@ -140,7 +144,6 @@ public class form3 {
                     frameFactura.pack();
                     frameFactura.setVisible(true);
 
-                    // Cerrar el formulario de reserva de asientos
                     JFrame frameReserva = (JFrame) SwingUtilities.getWindowAncestor(reserva_asientos);
                     frameReserva.dispose();
 
@@ -158,9 +161,13 @@ public class form3 {
 
 
     private String obtenerNombrePelicula(String idPelicula) {
-        String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+        /*String URL = "jdbc:mysql://localhost:3306/cine_reserva";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "123456";*/
+
+        String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+        String USER = "sql10724198";
+        String PASSWORD = "MA6tTZqL72";
 
         String query = "SELECT nombre_pelicula FROM peliculas WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
