@@ -1,5 +1,4 @@
 package Interfaz_Admin;
-
 import Login_Registro.login;
 import java.util.UUID;
 import javax.swing.*;
@@ -7,29 +6,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import org.mindrot.jbcrypt.BCrypt;
+
+/**
+ * La clase <code>AdminForm</code> representa la interfaz de administración del sistema de reservas.
+ * Permite al administrador agregar, actualizar, eliminar películas y clientes, cargar datos y ver estadísticas de ocupacion.
+ *
+ * @author Mateo Morán
+ */
 public class AdminForm {
-    private JButton agregarButton;
-    private JButton agregarPeliculaButton;
-    private JButton actualizarPeliculaButton;
-    private JButton eliminarPeliculaButton;
-    private JButton cargarPeliculasButton;
-    private JButton agregarClienteButton;
-    private JButton actualizarClienteButton;
-    private JButton eliminarClienteButton;
-    private JButton cargarDatosClienteButton;
-    private JButton cargarEstadisticasButton;
-    public JPanel AdministradorPanel;
-    private JButton volverButton;
+    private JButton agregarPeliculaButton; // Botón para agregar una película
+    private JButton actualizarPeliculaButton; // Botón para actualizar una película
+    private JButton eliminarPeliculaButton; // Botón para eliminar una película
+    private JButton cargarPeliculasButton; // Botón para cargar la lista de películas
+    private JButton agregarClienteButton; // Botón para agregar un cliente
+    private JButton actualizarClienteButton; // Botón para actualizar un cliente
+    private JButton eliminarClienteButton; // Botón para eliminar un cliente
+    private JButton cargarDatosClienteButton; // Botón para cargar la lista de clientes
+    private JButton cargarEstadisticasButton; // Botón para cargar estadísticas de ocupaciónv
+    public JPanel AdministradorPanel; // Panel principal del administrador
+    private JButton volverButton; // Botón para volver al loginv
 
-            String URL = "jdbc:mysql://localhost:3306/cine_reserva";
-            String USER = "root";
-            String PASSWORD = "123456";
+    // Configuración de conexión a la base de datos
+    String URL = "jdbc:mysql://localhost:3306/cine_reserva";
+    String USER = "root";
+    String PASSWORD = "123456";
 
-        /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
-        String USER = "sql10724198";
-        String PASSWORD = "MA6tTZqL72";*/
 
+    // Configuración de conexión a la base de datos en la nube
+    /*String URL = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10724198";
+     String USER = "sql10724198";
+     String PASSWORD = "MA6tTZqL72";*/
+
+    /**
+     * Constructor de la clase <code>AdminForm</code>.
+     * Inicializa los componentes de la interfaz y configura los ActionListeners para los botones.
+     */
     public AdminForm() {
+
         // Gestión de Películas
         agregarPeliculaButton.addActionListener(new ActionListener() {
             @Override
@@ -58,6 +71,7 @@ public class AdminForm {
                 cargarPeliculas();
             }
         });
+
 
         // Gestión de Clientes
         agregarClienteButton.addActionListener(new ActionListener() {
@@ -98,18 +112,23 @@ public class AdminForm {
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Regresar al panel de login
                 JFrame frame1 = new JFrame("Login");
                 frame1.setContentPane(new login().panel_login);
                 frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame1.pack();
                 frame1.setVisible(true);
 
+                // Cerrar la ventana del panel de administración
                 JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(AdministradorPanel);
                 frame.dispose();
             }
         });
     }
 
+    /**
+     * Agrega una nueva película a la base de datos.
+     */
     private void agregarPelicula() {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre de la película:");
         String horario = JOptionPane.showInputDialog("Ingrese el horario (en formato JSON):");
@@ -132,6 +151,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Actualiza los detalles de una película existente en la base de datos.
+     */
     private void actualizarPelicula() {
         String id = JOptionPane.showInputDialog("Ingrese el ID de la película a actualizar:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de la película:");
@@ -155,6 +177,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Elimina una película de la base de datos.
+     */
     private void eliminarPelicula() {
         String id = JOptionPane.showInputDialog("Ingrese el ID de la película a eliminar:");
 
@@ -174,6 +199,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Carga y muestra la lista de películas desde la base de datos.
+     */
     private void cargarPeliculas() {
         String query = "SELECT id, nombre_pelicula, horario FROM peliculas";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -194,6 +222,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Agrega un nuevo cliente a la base de datos.
+     */
     private void agregarCliente() {
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente:");
@@ -204,14 +235,18 @@ public class AdminForm {
             return;
         }
 
+        // Validar formato del correo
         if (!correo.endsWith("@gmail.com")) {
             JOptionPane.showMessageDialog(null, "Para registrar un cliente, el correo debe terminar en '@gmail.com'.");
             return;
         }
+        // Hashear contraseña
         String hashedPassword = BCrypt.hashpw(contrasena, BCrypt.gensalt());
 
+        // Consulta SQL para agregar clientes
         String queryInsert = "INSERT INTO clientes (correo, nombre, contrasena) VALUES (?, ?, ?)";
 
+        // Intentar la conexion para agregar clientes
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement stmtInsert = conn.prepareStatement(queryInsert)) {
 
@@ -228,7 +263,9 @@ public class AdminForm {
         }
     }
 
-
+    /**
+     * Actualiza la información de un cliente en la base de datos.
+     */
     private void actualizarCliente() {
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a actualizar:");
         String nombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del cliente:");
@@ -261,6 +298,10 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Elimina un cliente de la base de datos.
+     * También elimina las reservas asociadas y actualiza el estado de los asientos.
+     */
     private void eliminarCliente() {
         String correo = JOptionPane.showInputDialog("Ingrese el correo del cliente a eliminar:");
 
@@ -284,6 +325,7 @@ public class AdminForm {
                 }
             }
 
+            // Eliminar reservas y clientes
             try (PreparedStatement stmtEliminarReservas = conn.prepareStatement(queryEliminarReservas)) {
                 stmtEliminarReservas.setString(1, correo);
                 stmtEliminarReservas.executeUpdate();
@@ -305,6 +347,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Carga y muestra la lista de clientes desde la base de datos.
+     */
     private void cargarClientes() {
         String query = "SELECT correo, nombre FROM clientes";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -324,6 +369,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Carga y muestra las estadísticas de ocupación de las películas desde la base de datos.
+     */
     private void cargarEstadisticas() {
         String queryOcupacion = "SELECT p.nombre_pelicula, COUNT(r.id) as reservas FROM reservas r " +
                 "JOIN peliculas p ON r.pelicula_id = p.id GROUP BY r.pelicula_id";
@@ -345,6 +393,9 @@ public class AdminForm {
         }
     }
 
+    /**
+     * Método principal para ejecutar la aplicación y mostrar la interfaz de administración.
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Panel de Administración");
         frame.setContentPane(new AdminForm().AdministradorPanel);
