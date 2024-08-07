@@ -46,7 +46,7 @@ public class login {
         String contrasena = new String(passwordField1.getPassword());
         String tipo = (String) comboBox1.getSelectedItem();
 
-        String query = "SELECT * FROM usuarios WHERE correo = ? AND contrasena = ? AND tipo = ?";
+        String query = "SELECT contrasena FROM usuarios WHERE correo = ? AND tipo = ?";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -56,6 +56,8 @@ public class login {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
+                    String hashedPassword = resultSet.getString("contrasena");
+                    if (BCrypt.checkpw(contrasena, hashedPassword)) {
                     JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso como " + tipo);
                     JFrame frame = new JFrame();
                     if ("cliente".equalsIgnoreCase(tipo)) {
