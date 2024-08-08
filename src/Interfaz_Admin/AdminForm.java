@@ -250,7 +250,7 @@ public class AdminForm {
                 "Tipo:", tipoBox
         };
 
-        int result = JOptionPane.showConfirmDialog(null, fields, "Registro", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(null, fields, "Agregar cliente", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String correo = correoField.getText();
             String nombre = nombreField.getText();
